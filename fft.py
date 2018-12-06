@@ -2,8 +2,8 @@ import numpy as np
 import matplotlib.pylab as plt
 from scipy import fftpack
 
-f = 100  # Frequency, in cycles per second, or Hertz
-f_s = 400  # Sampling rate, or number of measurements per second
+f = 440  # Frequency, in cycles per second, or Hertz
+f_s = 900  # Sampling rate, or number of measurements per second
 
 t = np.linspace(0, 2, 2 * f_s, endpoint=False)
 x = np.sin(f * 2 * np.pi * t)
