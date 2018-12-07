@@ -3,3 +3,4 @@
 <p>https://matplotlib.org/users/pyplot_tutorial.html</p>
 <p>https://pythonspot.com/pyqt5-matplotlib/</p>
 <p>https://stackoverflow.com/questions/24974032/reading-realtime-audio-data-into-numpy-array</p>
+<p>https://flothesof.github.io/pyqt-microphone-fft-application.html</p>
