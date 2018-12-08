@@ -1,48 +1,34 @@
-# import matplotlib.pyplot as plt
-# from scipy.fftpack import fft
-# from scipy.io import wavfile
-#
-# fs, data = wavfile.read("carlin_jesus.wav")
-#
-# plt.plot(data, 'r')
-# plt.show()
-
-from __future__ import print_function
-import scipy.io.wavfile as wavfile
-import scipy
-import scipy.fftpack
+import pyaudio
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 
-fs_rate, signal = wavfile.read("carlin_jesus.wav")
-print("Frequency sampling", fs_rate)
-l_audio = len(signal.shape)
-print("Channels", l_audio)
-if l_audio == 2:
-    signal = signal.sum(axis=1) / 2
-N = signal.shape[0]
-print("Complete Samplings N", N)
-secs = N / float(fs_rate)
-print("secs", secs)
-Ts = 1.0/fs_rate # sampling interval in time
-print("Timestep between samples Ts", Ts)
-t = scipy.arange(0, secs, Ts) # time vector as scipy arange field / numpy.ndarray
-FFT = abs(scipy.fft(signal))
-FFT_side = FFT[range(N//2)] # one side FFT range
-freqs = scipy.fftpack.fftfreq(signal.size, t[1]-t[0])
-fft_freqs = np.array(freqs)
-freqs_side = freqs[range(N//2)] # one side frequency range
-fft_freqs_side = np.array(freqs_side)
-plt.subplot(311)
-p1 = plt.plot(t, signal, "g") # plotting the signal
-plt.xlabel('Time')
-plt.ylabel('Amplitude')
-plt.subplot(312)
-p2 = plt.plot(freqs, FFT, "r") # plotting the complete fft spectrum
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Count dbl-sided')
-plt.subplot(313)
-p3 = plt.plot(freqs_side, abs(FFT_side), "b") # plotting the positive fft spectrum
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Count single-sided')
-plt.show()
+np.set_printoptions(suppress=True) # don't use scientific notation
+
+CHUNK = 5120 # number of data points to read at a time
+RATE = 44100 # time resolution of the recording device (Hz)
+
+p=pyaudio.PyAudio() # start the PyAudio class
+stream=p.open(format=pyaudio.paInt16,channels=1,rate=RATE,input=True,
+              frames_per_buffer=CHUNK) #uses default input device
+
+# create a numpy array holding a single read of audio data
+for i in range(20): #to it a few times just to see
+    data = np.fromstring(stream.read(CHUNK),dtype=np.int16)
+    data = data * np.hanning(len(data)) # smooth the FFT by windowing data
+    fft = abs(np.fft.fft(data).real)
+    fft = fft[:int(len(fft)/2)] # keep only first half
+    freq = np.fft.fftfreq(CHUNK,1.0/RATE)
+    freq = freq[:int(len(freq)/2)] # keep only first half
+    freqPeak = freq[np.where(fft==np.max(fft))[0][0]]+1
+    print("peak frequency: %d Hz"%freqPeak)
+
+    # uncomment this if you want to see what the freq vs FFT looks like
+    plt.plot(freq,fft)
+    plt.axis([0,400,None,None])
+    plt.show()
+    plt.close()
+
+# close the stream gracefully
+stream.stop_stream()
+stream.close()
+p.terminate()
