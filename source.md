@@ -6,3 +6,5 @@
 <p>https://flothesof.github.io/pyqt-microphone-fft-application.html</p>
 <p>https://www.swharden.com/wp/2016-07-19-realtime-audio-visualization-in-python/</p>
 <p>http://newt.phys.unsw.edu.au/music/note/</p>
+<p>http://www.szynalski.com/tone-generator/</p>
+<p>https://fr.wikipedia.org/wiki/Accordage</p>
