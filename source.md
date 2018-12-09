@@ -5,3 +5,4 @@
 <p>https://stackoverflow.com/questions/24974032/reading-realtime-audio-data-into-numpy-array</p>
 <p>https://flothesof.github.io/pyqt-microphone-fft-application.html</p>
 <p>https://www.swharden.com/wp/2016-07-19-realtime-audio-visualization-in-python/</p>
+<p>http://newt.phys.unsw.edu.au/music/note/</p>
